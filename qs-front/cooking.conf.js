@@ -10,6 +10,12 @@ cooking.set({
   devServer: {
     port: 8080,
     publicPath: '/',
+    proxy: {
+      '/api/**': {
+        target: 'http://localhost:3003/',
+        changeOrigin: true,
+      }
+    },
     historyApiFallback: {
       rewrites: [
         { from: /^\/home/, to: '/home.html'}

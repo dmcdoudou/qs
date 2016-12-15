@@ -2,13 +2,13 @@
     <div class="container">
         <qs-box title="注册青霜科技ID" class="wow fadeInDown">
             <el-form class="form" ref="form" :model="form" :rules="rules" label-width="100px">
-                <el-form-item label="邮箱" prop="email">
+                <el-form-item label="邮箱" prop="email" ref="email">
                     <el-input v-model="form.email" />
                 </el-form-item>
                 <el-form-item label="验证码" prop="captcha">
                     <div class="captcha">
                         <el-input v-model="form.captcha" class="input" />
-                        <el-button type="primary" class="btn">获取验证码</el-button>
+                        <el-button type="primary" class="btn" @click="getCaptcha">获取验证码</el-button>
                     </div>
                 </el-form-item>
                 <el-form-item label="密码" prop="password" required>
@@ -55,30 +55,38 @@
           },
           rules: {
             email: [{
-              required: true, message: "密码不能为空", trigger: ['blur', 'change']
+              required: true, message: "邮箱不能为空", trigger: 'blur'
             }, {
-              type: 'email', message: '邮箱地址不正确', trigger: ['change', 'blur']
+              type: 'email', message: '邮箱地址不正确', trigger: 'blur'
             }],
             captcha: [{
-              required: true, message: "验证码不能为空", trigger: ['blur', 'change']
+              required: true, message: "验证码不能为空", trigger: 'blur'
             }],
             password: [{
               validator: validatePassword, trigger: 'blur'
             }],
             confirm: [{
-              validator: validateConfirm, trigger: ['blur', 'change']
+              validator: validateConfirm, trigger: 'blur'
             }]
           }
         }
       },
       methods: {
         onSubmit() {
+          this.$refs.form.validate()
           this.login({email: 'd', password: 'sd'})
         },
         onReset() {
           this.$refs.form.resetFields()
         },
-        ...mapActions(['login'])
+        getCaptcha() {
+          this.$refs.form.validateField('email', (err) => {
+            if(err) return
+            this.sendValidateEmail(this.form.email)
+
+          })
+        },
+        ...mapActions(['login', 'sendValidateEmail'])
       },
       mounted() {
         new WOW().init()

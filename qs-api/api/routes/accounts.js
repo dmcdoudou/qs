@@ -14,7 +14,7 @@ function generateRoute() {
   /**
    * 下发验证码邮件验证邮箱
    */
-  router.post('/send/validation/mail', async (req, res, next) => {
+  router.post('/send/validate/email', async (req, res, next) => {
     let {email, salt} = req.body
     let captcha = getCaptcha(email, salt)
     try {
@@ -49,12 +49,16 @@ function generateRoute() {
     try {
       let user = await Account.findOne({email, password: md5(password)})
       if (user) {
-        res.json(await signWithId(user._id))
+        res.json({
+          token: await signWithId(user._id),
+          user
+        })
       }else throw customError(400, '邮箱或密码不正确')
     }catch (err) {
       next(filterMongoValidateError(err))
     }
   })
+  
   
   /**
    * 完善信息
@@ -90,5 +94,5 @@ function generateRoute() {
 }
 
 export default (app) => {
-  app.use('/account', generateRoute())
+  app.use('/api/account', generateRoute())
 }
