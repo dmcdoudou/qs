@@ -1,0 +1,28 @@
+{
+  "name": "qs-front",
+  "version": "0.0.0",
+  "description": "A vue project.",
+  "private": true,
+  "keywords": [],
+  "scripts": {
+    "dev": "cooking watch -p",
+    "dist": "cooking build -p",
+    "deploy": "cooking build --no-color"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "babel-polyfill": "*",
+    "element-ui": "^1.0.7",
+    "font-awesome": "^4.7.0",
+    "vue": "^2.0.2",
+    "vue-resource": "^1.0.3",
+    "vue-router": "^2.1.1",
+    "vuex": "^2.0.0"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-runtime": "^6.15.0",
+    "babel-preset-latest": "^6.16.0",
+    "babel-preset-stage-0": "^6.16.0",
+    "cooking-vue2": "*"
+  }
+}

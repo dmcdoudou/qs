@@ -1,0 +1,32 @@
+{
+  "pages": [
+    {
+      "entry": "home",
+      "title": "Home Page",
+      "cdn": {
+        "js": [
+          "//cdn.bootcss.com/wow/1.1.2/wow.min.js"
+        ],
+        "css": [
+          "//cdn.bootcss.com/animate.css/3.5.2/animate.min.css"
+        ]
+      }
+    },
+    {
+      "entry": "admin",
+      "title": "Admin Page",
+      "cdn": {}
+    }
+  ],
+  "basePath": "./src/pages/",
+  "cdn": {
+    "js": [
+      "//unpkg.com/babel-polyfill@6.13.0/dist/polyfill.min.js"
+    ],
+    "css": [
+      "//cdn.bootcss.com/normalize/5.0.0/normalize.min.css"
+    ]
+  },
+  "externals": {
+  }
+}
