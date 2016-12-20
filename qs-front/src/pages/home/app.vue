@@ -6,8 +6,8 @@
           <el-button size='small'>概述</el-button>
         </div>
         <div class="right">
-          <el-button type='primary' size='small'>加入购物车</el-button>
-          <el-button type='danger' size='small'>立即购买</el-button>
+          <el-button type='primary' size='small' @click.native="addShopCar">加入购物车</el-button>
+          <el-button type='danger' size='small' @click.native="buyNow">立即购买</el-button>
         </div>
       </div>
     </div>
@@ -42,15 +42,15 @@
   </div>
 </template>
 
-<script>
+<script lang="babel">
   export default {
     name: 'app',
     methods: {
-      handleClick() {
-        this.$notify({
-          title: 'it works',
-          message: 'asdfasdf'
-        })
+      buyNow() {
+        this.$router.push('/payment')
+      },
+	    addShopCar(){
+	      this.$router.push('/shopcar')
       }
     },
     mounted() {

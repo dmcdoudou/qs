@@ -9,7 +9,7 @@
                     <el-input v-model="form.password" />
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click.native="onSubmit">注册</el-button>
+                    <el-button type="primary" @click.native="onSubmit">登录</el-button>
                     <el-button type="danger" @click.native="onReset">重填</el-button>
                 </el-form-item>
             </el-form>
@@ -48,7 +48,11 @@
           this.$refs.form.validate(result => {
 
           	if (!result) return
-            this[types.LOGIN](this.form)
+            this[types.LOGIN](this.form).then(res => {
+            	if (!res.error) {
+                this.$router.push('/')
+	            }
+            })
           })
         },
         onReset() {

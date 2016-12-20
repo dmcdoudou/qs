@@ -1,7 +1,7 @@
 /**
  * Created by jason on 2016/12/20.
  */
-import {app} from '../pages/home/index'
+import store from 'src/store/home'
 import axios from 'axios'
 import Vue from 'vue'
 
@@ -11,7 +11,7 @@ import Vue from 'vue'
 let client
 
 function getToken() {
-	return app.$store.state.user.token
+	return store.getters.token
 }
 
 function getClient() {
@@ -43,6 +43,13 @@ function filterResponse(res) {
 export const post = (url, data, config) => {
 	return getClient().post(url, data, {
 		// global config
+		...config
+	}).then(filterResponse).catch(filterError)
+}
+
+export const get = (url, params, config) => {
+	return getClient().get(url, {
+		params: params,
 		...config
 	}).then(filterResponse).catch(filterError)
 }

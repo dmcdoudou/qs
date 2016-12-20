@@ -8,7 +8,11 @@
                 <el-menu-item index="1">启动系统</el-menu-item>
                 <el-menu-item index="2">官方论坛</el-menu-item>
                 <el-menu-item index="3">黑科技NEWS</el-menu-item>
-                <li class="el-menu-item log-btn-group">
+                <li v-if="author" class="el-menu-item log-btn-group">
+                    <el-button @click.native="logout" icon="fa-sign-out">登出</el-button>
+                    <el-button @click.native="goProfile" icon="fa-user">{{ author.email.split('@')[0] }}</el-button>
+                </li>
+                <li v-else="author" class="el-menu-item log-btn-group" >
                     <el-button @click.native="register" icon="fa-user-plus">注册</el-button>
                     <el-button @click.native="login" icon="fa-sign-in">登录</el-button>
                 </li>
@@ -19,27 +23,39 @@
 </template>
 
 <script lang="babel">
-	export default {
-	  name: 'Nav',
-		data() {
-	    return {
-	    }
-		},
-		methods: {
-	    login() {
-	      this.$router.push('/login')
-      },
-      register() {
-	      this.$router.push('/register')
-      },
-	    handleSelect(index) {
-
-	      if(index === "1") {
+import {mapGetters, mapActions} from 'vuex'
+import * as types from '../../store/home/types'
+import * as auth from 'src/utils/auth'
+export default{
+  name: 'Nav',
+  computed: {
+    ...mapGetters(['author'])
+  },
+  methods: {
+    login() {
+      this.$router.push('/login')
+    },
+    register() {
+      this.$router.push('/register')
+    },
+	  goProfile() {
+    	this.$router.push('/profile')
+    },
+    handleSelect(index) {
+      if(index === '1') {
             this.$router.replace('/')
         }
-	    }
-		}
-	}
+    },
+    logout() {
+    	this[types.LOGOUT]()
+      this.$router.push('/')
+    },
+    ...mapActions([types.LOGOUT])
+  },
+  created:function() {
+  	auth.resume()
+  }
+}
 </script>
 
 <style scoped lang="less">

@@ -11,5 +11,6 @@ export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
 export const REGISTER = 'REGISTER'
 export const SEND_VALIDATE_EMAIL = 'SEND_VALIDATE_EMAIL'
+export const RESUME = 'RESUME'
 
 

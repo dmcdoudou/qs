@@ -76,7 +76,11 @@
           this.$refs.form.validate(result => {
 
           	if (!result) return
-            this[types.REGISTER](this.form)
+            this[types.REGISTER](this.form).then(res => {
+            	if (!res.error) {
+                this.$router.push('/')
+	            }
+            })
           })
         },
         onReset() {
