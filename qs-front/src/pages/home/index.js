@@ -9,6 +9,7 @@ import store from 'src/store/home'
 
 import Root from './root'
 import Register from './register'
+import Login from './login'
 import App from './app'
 
 
@@ -26,16 +27,19 @@ const router = new VueRouter({
   routes: [
     {path: '/', component: App},
     {path: '/register', component: Register},
+    {path: '/login', component: Login},
     {path: '/foo', component: Foo},
     {path: '/bar', component: Bar}
   ]
 })
 
 
-new Vue({ // eslint-disable-line
+export const app = new Vue({ // eslint-disable-line
   el: '#app',
   store,
   router,
   render: h => h(Root)
 });
+
+// console.log(app.$store.state.user.token)
 

@@ -55,12 +55,8 @@ const AccountSchema = new Schema({
   
 }, {
   timestamps: true,
-  toJSON: {
-    minimize: true
-  }
 })
 
-AccountSchema.set('toJSON', {})
 
 
 export const Account = mongoose.model('Account', AccountSchema)

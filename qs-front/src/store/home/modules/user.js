@@ -2,53 +2,73 @@
  * Created by jason on 2016/12/14.
  */
 
-import Vue from 'vue'
-const SET_USER = 'SET_USER'
-const UNSET_USER = 'UNSET_USER'
-const SET_SALT = 'SET_SALT'
+import * as req from 'src/utils/req'
+import * as types from '../types'
+
 
 const state = {
   currentUser: null,
-  salt: null
+  salt: null,
+  token: null
 }
 
 const getters = {
-  token: state => state.currentUser && state.currentUser.token,
+  token: state => state.token,
   author: state => state.currentUser
 }
 
 const actions = {
-  login({commit, state}, {email, password}) {
-    Vue.http.post('/api/account/login', {email, password}).then(res => {
-      commit(SET_USER, res.data)
-    }).catch(res => {
-      console.log(res.data)
+  [types.SET_TOKEN]({commit}, token) {
+    localStorage.setItem('token', token)
+    commit(types.SET_TOKEN, token)
+  },
+  [types.REGISTER]({commit, dispatch, state}, {email, password, captcha}) {
+    req.post('/account/register', {email, password, captcha, salt: state.salt}).then(res => {
+      if (!res.error) {
+        commit(types.SET_USER, res.user)
+        dispatch(types.SET_TOKEN, res.token)
+      }
     })
   },
-  sendValidateEmail({commit}, email){
-    const salt = new Date().getMilliseconds()
-    Vue.http.post('/api/account/send/validate/email', {email, salt}).then(() => {
-      commit(SET_SALT, salt)
-    }).catch(res => {
-      console.log(Vue.http)
-      Vue.prototype.$message({
-        type: 'error',
-        message: 'asdf'
-      })
-      console.log(res.data)
+  [types.LOGIN]({commit, dispatch}, {email, password}){
+    req.post('/account/login', {email, password}).then(res => {
+      if(!res.error) {
+	        commit(types.SET_USER, res.user)
+	        dispatch(types.SET_TOKEN, res.token)
+      }
     })
+  },
+  [types.SEND_VALIDATE_EMAIL]({commit}, email){
+    const salt = new Date().getMilliseconds()
+    req.post('/account/send/validate/email', {email, salt}).then(() => {
+      commit(types.SET_SALT, salt)
+    })
+  },
+  [types.LOGOUT]({dispatch}){
+    dispatch(types.LOGOUT)
   }
+
 }
 
 const mutations = {
-  [SET_USER] (state, user) {
+  [types.SET_USER] (state, user) {
     state.currentUser = user
   },
-  [UNSET_USER] (state) {
+  [types.UNSET_USER] (state) {
     state.currentUser = null
   },
-  [SET_SALT] (state, salt) {
+  [types.SET_SALT] (state, salt) {
     state.salt = salt
+  },
+  [types.SET_TOKEN] (state, token) {
+    state.token = token
+  },
+  [types.UNSET_TOKEN] (state) {
+    state.token = null
+  },
+  [types.LOGOUT] (state){
+    state.token = null
+    state.currentUser = null
   }
 }
 

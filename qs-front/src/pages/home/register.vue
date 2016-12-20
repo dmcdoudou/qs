@@ -24,12 +24,12 @@
             </el-form>
         </qs-box>
     </div>
-
 </template>
 
 
 <script lang="babel">
     import Box from '../../components/box'
+    import * as types from '../../store/home/types'
     import { mapActions } from 'vuex'
     export default {
       data() {
@@ -73,20 +73,23 @@
       },
       methods: {
         onSubmit() {
-          this.$refs.form.validate()
-          this.login({email: 'd', password: 'sd'})
+          this.$refs.form.validate(result => {
+
+          	if (!result) return
+            this[types.REGISTER](this.form)
+          })
         },
         onReset() {
           this.$refs.form.resetFields()
         },
         getCaptcha() {
           this.$refs.form.validateField('email', (err) => {
-            if(err) return
-            this.sendValidateEmail(this.form.email)
+//            if(err) return
+            this[types.SEND_VALIDATE_EMAIL](this.form.email)
 
           })
         },
-        ...mapActions(['login', 'sendValidateEmail'])
+        ...mapActions([types.REGISTER, types.SEND_VALIDATE_EMAIL])
       },
       mounted() {
         new WOW().init()

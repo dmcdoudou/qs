@@ -10,6 +10,7 @@ import mongoose from 'mongoose'
 import util from 'util'
 import _ from 'lodash'
 import cors from 'cors'
+import {decodeTokenToAccount} from './utils/auth'
 
 
 /**
@@ -61,6 +62,7 @@ app.use(logger('dev'))
 app.use(cors())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
+app.use(/!(^\/api\/account)/, decodeTokenToAccount)
 routes(app)
 
 app.get('/', (req,res) => {

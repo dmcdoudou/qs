@@ -3,6 +3,7 @@
  */
 import requireDir from 'require-dir'
 import _ from 'lodash'
+
 export default (app) => {
   const dir = requireDir('.')
   _.mapValues(dir, item => {

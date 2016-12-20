@@ -35,7 +35,11 @@ function generateRoute() {
     let { email, captcha, password, salt } = req.body
     if ( getCaptcha(email, salt) !== captcha ) return next(customError(400, '验证码不正确'))
     try{
-      res.json(await Account.create({email,password: md5(password)}))
+      let user = await Account.create({email, password: md5(password)})
+      res.json({
+        user,
+        token: await signWithId(user._id)
+      })
     }catch (err){
       next(filterMongoValidateError(err))
     }
@@ -56,6 +60,19 @@ function generateRoute() {
       }else throw customError(400, '邮箱或密码不正确')
     }catch (err) {
       next(filterMongoValidateError(err))
+    }
+  })
+
+	/**
+   * 通过token恢复登录状态
+	 */
+	router.get('/resume', decodeTokenToAccount, async (req,res,next) => {
+    if (req.user) {
+	    res.json({
+		    user: req.user
+	    })
+    }else {
+      next(customError(401, 'token无效'))
     }
   })
   

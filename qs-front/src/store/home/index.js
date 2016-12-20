@@ -10,10 +10,26 @@ Vue.use(Vuex)
 
 const debug = process.env.NODE_ENV !== 'production'
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   modules: {
     user
   },
   strict: true,
   plugins: debug ? [createLogger()] : []
 })
+
+if (module.hot) {
+  module.hot.accept([
+    './modules/user'
+  ], () => {
+    const newModuleUser = require('./modules/user').default
+
+    store.hotUpdate({
+      modules: {
+        user: newModuleUser
+      }
+    })
+  })
+}
+
+export default store
