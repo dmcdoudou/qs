@@ -8,9 +8,10 @@ yarn dev
 ```
 
 ## 前端
+[ElemeFE/cooking][72786c6c]
 ```bash
 cd qs-front
-yarn global add cooking-cli #[ElemeFE/cooking][72786c6c]
+yarn global add cooking-cli
 yarn install
 yarn dev
 ```
